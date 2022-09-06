@@ -1,5 +1,8 @@
 import React from 'react';
-import { useDeleteContactMutation, useEditContactMutation } from '../../redux';
+import {
+  useDeleteContactMutation,
+  // useEditContactMutation
+} from '../../redux';
 import { Blocks } from 'react-loader-spinner';
 import PropTypes from 'prop-types';
 import { Notify } from 'notiflix';
