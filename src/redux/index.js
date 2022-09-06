@@ -1,5 +1,10 @@
 export {
-  useFetchContactsQuery,
+  useGetUserQuery,
+  useSignUpUserMutation,
+  useSignInUserMutation,
+  useLogOutUserMutation,
+  useGetContactsQuery,
   useDeleteContactMutation,
   useCreateContactMutation,
-} from './contacts/contactsSlice';
+  useEditContactMutation,
+} from './phonebook/phonebookSlice';

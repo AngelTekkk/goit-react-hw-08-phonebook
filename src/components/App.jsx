@@ -1,28 +1,43 @@
-import React, { useState } from 'react';
-import { useFetchContactsQuery } from '../redux';
-import { Filter, ContactList, Section, ContactForm } from './index';
+import { lazy } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { SharedLayout } from './index';
+import { useGetUserQuery } from '../redux';
+import PrivateRoutes from 'utils/PrivateRoutes';
+import PublicRoutes from 'utils/PublicRoutes';
+
+const Contacts = lazy(() => import('pages/Contacts'));
+const Login = lazy(() => import('pages/Login'));
+const Register = lazy(() => import('pages/Register'));
+const NotFoundPage = lazy(() => import('pages/NotFoundPage'));
 
 export default function App() {
-  const { data: contacts } = useFetchContactsQuery();
+  const { isLoading } = useGetUserQuery();
 
-  const [filter, setFilter] = useState('');
-  const handleFilterChange = ({ target: { value } }) => {
-    setFilter(value);
-  };
-  const normalizedFilter = filter.trim().toLowerCase();
-  const visibleContacts = contacts?.filter(contact =>
-    contact.name.toLowerCase().includes(normalizedFilter)
-  );
+  let user = null;
+  if (localStorage.getItem('user')) {
+    user = JSON.parse(localStorage.getItem('user'));
+  }
 
   return (
-    <>
-      <Section title="Phonebook">
-        <ContactForm contacts={contacts} />
-      </Section>
-      <Section title="Contacts">
-        <Filter filter={filter} onChange={handleFilterChange} />
-        <ContactList visibleContacts={visibleContacts} />
-      </Section>
-    </>
+    <Routes>
+      <Route path="/" element={<SharedLayout user={user} />}>
+        <Route
+          index
+          element={<Navigate to={`${user ? 'contacts' : 'login'}`} />}
+        />
+        {!isLoading && (
+          <>
+            <Route element={<PrivateRoutes user={user} />}>
+              <Route path="contacts" element={<Contacts />} />
+            </Route>
+            <Route element={<PublicRoutes user={user} />}>
+              <Route path="login" element={<Login />} index />
+              <Route path="register" element={<Register />} />
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </>
+        )}
+      </Route>
+    </Routes>
   );
 }

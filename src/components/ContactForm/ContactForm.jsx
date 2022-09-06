@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Notify } from 'notiflix';
 import { Blocks } from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 import s from './ContactForm.module.css';
 
 import { useCreateContactMutation } from '../../redux';
@@ -29,7 +30,7 @@ export default function ContactForm({ contacts }) {
     const isNameAlreadyAdded = contacts.find(
       c => c.name.toLowerCase() === name.toLowerCase()
     );
-    const isNumberAlreadyAdded = contacts.find(c => c.phone === number);
+    const isNumberAlreadyAdded = contacts.find(c => c.number === number);
     if (isNameAlreadyAdded || isNumberAlreadyAdded) {
       isNameAlreadyAdded && Notify.failure(`${name} is already in contacts.`);
       isNumberAlreadyAdded &&
@@ -82,3 +83,13 @@ export default function ContactForm({ contacts }) {
     </form>
   );
 }
+
+ContactForm.propTypes = {
+  visibleContacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
+};
