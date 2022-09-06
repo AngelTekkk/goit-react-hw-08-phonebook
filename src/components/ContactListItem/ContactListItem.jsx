@@ -7,17 +7,17 @@ import s from './ContactListItem.module.css';
 
 export default function ContactListItem({ contact: { id, name, number } }) {
   const [deleteContact, { isLoading }] = useDeleteContactMutation();
-  const [editContact, { isLoading: isEditing }] = useEditContactMutation();
+  // const [editContact, { isLoading: isEditing }] = useEditContactMutation();
 
   const onDeleteContact = (id, name) => {
     Notify.info(`${name} is deleted from contacts.`);
     deleteContact(id);
   };
 
-  const onEditContact = (id, name, number) => {
-    console.log(id, name, number);
-    editContact({ id, name, number });
-  };
+  // const onEditContact = (id, name, number) => {
+  //   console.log(id, name, number);
+  //   editContact({ id, name, number });
+  // };
 
   return (
     <>
