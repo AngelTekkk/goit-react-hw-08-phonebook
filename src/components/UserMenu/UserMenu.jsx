@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useLogOutUserMutation, useGetUserQuery } from '../../redux';
+import { useLogOutUserMutation } from '../../redux';
 
 export default function UserMenu() {
   const navigate = useNavigate();
