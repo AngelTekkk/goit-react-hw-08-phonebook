@@ -17,7 +17,7 @@ const SignupSchema = Yup.object().shape({
 
 export default function Register() {
   const navigate = useNavigate();
-  const [signUpUser] = useSignUpUserMutation();
+  const [signUpUser, { isSuccess }] = useSignUpUserMutation();
 
   return (
     <div className="bg-white dark:bg-gray-900">
@@ -66,7 +66,9 @@ export default function Register() {
                   const { name, email, password } = values;
                   signUpUser({ name, email, password });
                   resetForm();
-                  navigate('/contacts');
+                  if (isSuccess) {
+                    navigate('/contacts');
+                  }
                 }}
               >
                 {({ errors, touched }) => (

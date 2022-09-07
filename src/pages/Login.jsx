@@ -13,7 +13,7 @@ const SignupSchema = Yup.object().shape({
 
 export default function Login() {
   const navigate = useNavigate();
-  const [signInUser] = useSignInUserMutation();
+  const [signInUser, { isSuccess }] = useSignInUserMutation();
 
   return (
     <div className="bg-white dark:bg-gray-900">
@@ -60,8 +60,10 @@ export default function Login() {
                 onSubmit={(values, { resetForm }) => {
                   const { email, password } = values;
                   signInUser({ email, password });
-                  resetForm();
-                  navigate('/contacts');
+                  if (isSuccess) {
+                    resetForm();
+                    navigate('/contacts');
+                  }
                 }}
               >
                 {({ errors, touched }) => (

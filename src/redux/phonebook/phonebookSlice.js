@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { Notify } from 'notiflix';
 
 export const phonebookApi = createApi({
   reducerPath: 'phonebookApi',
@@ -37,9 +38,16 @@ export const phonebookApi = createApi({
           localStorage.setItem('user', JSON.stringify(data));
         } catch (err) {
           console.log(err);
+          Notify.failure('User with this email may exist already');
         }
       },
-      invalidatesTags: ['User'],
+      invalidatesTags: result => {
+        console.log(result);
+        if (!result) {
+          return;
+        }
+        return ['User'];
+      },
     }),
     signInUser: builder.mutation({
       query: ({ email, password }) => ({
@@ -53,10 +61,16 @@ export const phonebookApi = createApi({
           localStorage.setItem('user', JSON.stringify(data));
         } catch (err) {
           console.log(err);
-          return alert('Let`s try again');
+          Notify.failure('Email or password doesn`t match');
         }
       },
-      invalidatesTags: ['User'],
+      invalidatesTags: result => {
+        console.log(result);
+        if (!result) {
+          return;
+        }
+        return ['User'];
+      },
     }),
     logOutUser: builder.mutation({
       query: () => ({
@@ -71,6 +85,7 @@ export const phonebookApi = createApi({
           }
         } catch (err) {
           console.log(err);
+          return alert('Let`s try again');
         }
       },
       invalidatesTags: ['User'],

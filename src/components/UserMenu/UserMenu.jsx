@@ -5,8 +5,9 @@ export default function UserMenu() {
   const navigate = useNavigate();
   const [signOut] = useLogOutUserMutation();
 
-  const { data } = useGetUserQuery();
-  const userName = data?.name;
+  const {
+    user: { name: userName },
+  } = JSON.parse(localStorage.getItem('user'));
 
   const handleSignOut = () => {
     signOut();
