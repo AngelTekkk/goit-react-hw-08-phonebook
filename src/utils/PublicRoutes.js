@@ -1,6 +1,10 @@
 import { Outlet, Navigate } from 'react-router-dom';
 
-const PublicRoutes = ({ user }) => {
+const PublicRoutes = () => {
+  let user = null;
+  if (localStorage.getItem('user')) {
+    user = JSON.parse(localStorage.getItem('user'));
+  }
   return !user ? <Outlet /> : <Navigate to="contacts" />;
 };
 

@@ -63,7 +63,7 @@ export default function Login() {
                   password: '',
                 }}
                 validationSchema={SignupSchema}
-                onSubmit={(values, { resetForm }) => {
+                onSubmit={values => {
                   const { email, password } = values;
                   signInUser({ email, password });
                 }}

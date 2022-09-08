@@ -31,21 +31,22 @@ export default function App() {
     <>
       {!isLoading && (
         <Routes>
-          <Route path="/" element={<SharedLayout onSkip={handleSkip} />}>
-            <Route
-              index
-              element={<Navigate to={`${user ? 'contacts' : 'login'}`} />}
-            />
-
-            <Route element={<PrivateRoutes user={user} />}>
+          <Route
+            index
+            element={<Navigate to={`${user ? 'contacts' : 'login'}`} />}
+          />
+          <Route element={<PrivateRoutes user={user} />}>
+            <Route path="/" element={<SharedLayout onSkip={handleSkip} />}>
               <Route path="contacts" element={<Contacts />} />
             </Route>
-            <Route element={<PublicRoutes user={user} />}>
+          </Route>
+          <Route element={<PublicRoutes user={user} />}>
+            <Route path="/" element={<SharedLayout onSkip={handleSkip} />}>
               <Route path="login" element={<Login />} index />
               <Route path="register" element={<Register />} />
             </Route>
-            <Route path="*" element={<NotFoundPage />} />
           </Route>
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       )}
     </>

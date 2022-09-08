@@ -3,7 +3,12 @@ import { useGetContactsQuery } from '../redux';
 import { Filter, ContactList, Section, ContactForm } from '../components/index';
 
 export default function Contacts() {
-  const { data: contacts } = useGetContactsQuery();
+  const { data: contacts } = useGetContactsQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const [filter, setFilter] = useState('');
   const handleFilterChange = ({ target: { value } }) => {

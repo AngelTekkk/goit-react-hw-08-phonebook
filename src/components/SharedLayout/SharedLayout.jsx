@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { UserMenu } from 'components/index';
 
 export const SharedLayout = ({ onSkip }) => {
-  const isUser = localStorage.getItem('user');
+  let isUser = null;
+  if (localStorage.getItem('user')) {
+    isUser = JSON.parse(localStorage.getItem('user'));
+  }
 
   return (
     <>
