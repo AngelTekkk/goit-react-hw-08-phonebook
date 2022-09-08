@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -14,6 +14,12 @@ const SignupSchema = Yup.object().shape({
 export default function Login() {
   const navigate = useNavigate();
   const [signInUser, { isSuccess }] = useSignInUserMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/contacts');
+    }
+  }, [isSuccess]);
 
   return (
     <div className="bg-white dark:bg-gray-900">
@@ -60,10 +66,6 @@ export default function Login() {
                 onSubmit={(values, { resetForm }) => {
                   const { email, password } = values;
                   signInUser({ email, password });
-                  if (isSuccess) {
-                    resetForm();
-                    navigate('/contacts');
-                  }
                 }}
               >
                 {({ errors, touched }) => (

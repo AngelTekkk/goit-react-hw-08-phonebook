@@ -1,17 +1,17 @@
-import { useNavigate } from 'react-router-dom';
-import { useLogOutUserMutation } from '../../redux';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useGetUserQuery, useLogOutUserMutation } from '../../redux';
 
-export default function UserMenu() {
-  const navigate = useNavigate();
+export default function UserMenu({ onSkip }) {
+  const [isSkip, setIsSkip] = useState(false);
   const [signOut] = useLogOutUserMutation();
-
-  const {
-    user: { name: userName },
-  } = JSON.parse(localStorage.getItem('user'));
+  const { data } = useGetUserQuery(isSkip, { skip: isSkip });
+  const userName = data?.name;
 
   const handleSignOut = () => {
+    setIsSkip(true);
+    onSkip(true);
     signOut();
-    navigate('/login');
   };
 
   return (
@@ -31,3 +31,7 @@ export default function UserMenu() {
     </div>
   );
 }
+
+UserMenu.propTypes = {
+  onSkip: PropTypes.func.isRequired,
+};

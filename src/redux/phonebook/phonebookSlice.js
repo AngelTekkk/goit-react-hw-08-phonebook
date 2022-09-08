@@ -7,19 +7,20 @@ export const phonebookApi = createApi({
     baseUrl: 'https://connections-api.herokuapp.com/',
     prepareHeaders: headers => {
       if (localStorage.getItem('user')) {
-        const { token } = JSON.parse(localStorage.getItem('user'));
+        const token = JSON.parse(localStorage.getItem('user'));
         if (token) {
           headers.set('authorization', `Bearer ${token}`);
         }
       }
-
       return headers;
     },
   }),
   tagTypes: ['User', 'Contacts'],
   endpoints: builder => ({
     getUser: builder.query({
-      query: () => '/users/current',
+      query: () => {
+        return '/users/current';
+      },
       providesTags: ['User'],
     }),
     signUpUser: builder.mutation({
@@ -35,14 +36,13 @@ export const phonebookApi = createApi({
       async onQueryStarted(id, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          localStorage.setItem('user', JSON.stringify(data));
+          localStorage.setItem('user', JSON.stringify(data.token));
         } catch (err) {
           console.log(err);
           Notify.failure('User with this email may exist already');
         }
       },
       invalidatesTags: result => {
-        console.log(result);
         if (!result) {
           return;
         }
@@ -58,14 +58,13 @@ export const phonebookApi = createApi({
       async onQueryStarted(id, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          localStorage.setItem('user', JSON.stringify(data));
+          localStorage.setItem('user', JSON.stringify(data.token));
         } catch (err) {
           console.log(err);
           Notify.failure('Email or password doesn`t match');
         }
       },
       invalidatesTags: result => {
-        console.log(result);
         if (!result) {
           return;
         }
@@ -85,7 +84,6 @@ export const phonebookApi = createApi({
           }
         } catch (err) {
           console.log(err);
-          return alert('Let`s try again');
         }
       },
       invalidatesTags: ['User'],
