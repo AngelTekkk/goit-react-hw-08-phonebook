@@ -19,7 +19,7 @@ export default function Login() {
     if (isSuccess) {
       navigate('/contacts');
     }
-  }, [isSuccess]);
+  }, [isSuccess, navigate]);
 
   return (
     <div className="bg-white dark:bg-gray-900">
